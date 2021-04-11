@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   erros.c                                            :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vribeiro <vribeiro@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 22:27:38 by vribeiro          #+#    #+#             */
-/*   Updated: 2021/04/10 22:49:12 by vribeiro         ###   ########.fr       */
+/*   Updated: 2021/04/11 02:29:24 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
+#include "functions.h"
 
 /*
 ** Essa função testa se inicialmente a quantidade de caracteres
@@ -21,11 +22,14 @@
 ** é um espaço. Se o teste falhar a função retorna "1", o que indica
 ** um erro. #TODO: printar uma mensagem de erro.
 */
-int	verifica_parametros(char *param, int param_size)
+
+int	check_parameter_errors(char *param)
 {
-	int	i;
+	unsigned int	i;
+	unsigned int	param_size;
 
 	i = 0;
+	param_size = ft_strlen(param);
 	if (param_size != 31)
 		return (1);
 	while (i < param_size)
@@ -35,9 +39,8 @@ int	verifica_parametros(char *param, int param_size)
 			if (param[i] < '1' || param[i] > '4')
 				return (1);
 		}
-		else
-			if (param[i] != ' ')
-				 return (1);
+		else if (param[i] != ' ')
+			return (1);
 		i++;
 	}
 	return (0);

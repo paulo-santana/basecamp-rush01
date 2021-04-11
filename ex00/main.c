@@ -6,31 +6,29 @@
 /*   By: vribeiro <vribeiro@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 17:53:52 by psergio-          #+#    #+#             */
-/*   Updated: 2021/04/10 22:41:25 by vribeiro         ###   ########.fr       */
+/*   Updated: 2021/04/11 02:36:54 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
+#include "functions.h"
 
+/*
+** TODO: preencher a matriz
+*/
 
 void	create_external_matrix(char *param, int param_size)
 {
 	int		i;
 	char	matrix[4][4];
 
-	/* TODO: preencher a matriz*/
-	i = param_size;
-
-		matrix[i / 4][i % 4] = param[i * 2];
-	/*return matrix; */
+	i = 0;
+	matrix[i / 4][i % 4] = param[i * 2];
+	return (matrix);
 }
 
-/* argument count, argument values */
-int	main(int argc, char *argv[])
+int		main(int argc, char *argv[])
 {
-	//int		i;
-	int		param_size;
 	char	*param;
 
 	if (argc != 2)
@@ -39,10 +37,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	param = argv[1];
-	param_size = 0;
-	while (param[param_size] != '\0')
-		param_size++;
-	if (has_errors(param, param_size))
+	if (check_parameter_errors(param))
 	{
 		write(1, "Error: bad param\n", 17);
 		return (1);
