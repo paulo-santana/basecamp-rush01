@@ -14,6 +14,7 @@
 # define FUNCTIONS_H
 
 unsigned int	ft_strlen(char *str);
-int				check_parameter_errors(char *str);
+int				is_parameter_valid(char *str);
+int				is_board_valid(int board[4][4]);
 
 #endif

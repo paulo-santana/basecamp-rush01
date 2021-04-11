@@ -1,0 +1,51 @@
+preencher o tabuleiro, casa por casa,
+colocando a primeira peça que não se repete
+na mesma linha e na mesma coluna
+
+verificar se a ordem das peças
+respeita os limites passados como argumento
+se respeitar: 
+	o tabuleiro foi resolvido
+se não:
+	alterar a ordem dos números nas casas, respeitando as condições na linha 2
+
+0 1 2 3
+
+1 2 3 4   0
+2 1 4 3   1
+3 4 2 1   2
+4 3 1 2   3 
+
+    0 1 2 3
+
+0   1 
+1
+2
+3
+
+se CC == 0
+	CC = 3
+	CL = CL - 1;
+senão:
+	CC = CC - 1;
+
+
+
+int i = 0;
+int j = 0;
+int cursor_linha = 0;
+int cursor_coluna = 0;
+while (cursor_linha < 4)
+{
+	j = 0;
+	while (cursor_coluna < 4)
+	{
+		n = 1;
+		while (n < 5)
+			if (can_place(n, matrix, cursor_linha, cursor_coluna))
+			{
+				matrix[i][j] = n++;
+				break ;
+			}
+	}
+}
