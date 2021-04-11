@@ -51,8 +51,10 @@ void	print_matrix(char matrix[4][4])
 			printf("%c", matrix[i][j]);
 			if (j < 3)
 				printf(" - ");
+			j++;
 		}
 		printf("\n");
+		i++;
 	}
 }
 
