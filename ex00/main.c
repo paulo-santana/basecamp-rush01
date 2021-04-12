@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
 #include "functions.h"
 
 /*
@@ -22,8 +21,10 @@
 ** matrix[2][X] = rowXleft
 ** matrix[3][X] = rowXright
 */
+int	g_outer_matrix[4][4];
+int	g_inner_matrix[4][4];
 
-void	fill_matrix(int matrix[4][4], char *param)
+void	fill_external_matrix(char *param)
 {
 	unsigned int	i;
 	unsigned int	param_size;
@@ -32,15 +33,126 @@ void	fill_matrix(int matrix[4][4], char *param)
 	param_size = ft_strlen(param);
 	while (i < (param_size / 2) + 1)
 	{
-		matrix[i / 4][i % 4] = param[i * 2] - '0';
+		g_outer_matrix[i / 4][i % 4] = param[i * 2] - '0';
 		i++;
 	}
 }
 
+int		can_place(int number, int linha, int coluna)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (++i < linha)
+		if (g_inner_matrix[i][coluna] == number)
+			return (0);
+	j = -1;
+	while (++j < coluna)
+		if (g_inner_matrix[linha][j] == number)
+			return (0);
+	return (1);
+}
+
+int		is_solved(int outer_matrix[4][4])
+{
+	int	is_top_valid;
+	int	is_bottom_valid;
+	int	is_left_valid;
+	int	is_right_valid;
+
+	is_top_valid = validate_top_to_bottom(g_inner_matrix, outer_matrix[0]);
+	is_bottom_valid = validate_bottom_to_top(g_inner_matrix, outer_matrix[1]);
+	is_left_valid = validate_left_to_right(g_inner_matrix, outer_matrix[2]);
+	is_right_valid = validate_right_to_left(g_inner_matrix, outer_matrix[3]);
+	if (is_top_valid && is_bottom_valid && is_left_valid && is_right_valid)
+		return (1);
+	return (0);
+}
+
+void	go_back(int *coluna, int *linha)
+{
+	if (*coluna == 0)
+	{
+		*coluna = 3;
+		*linha = *linha - 1;
+	}
+	else
+	{
+		*coluna = *coluna - 1;
+	}
+}
+
+int		check_board(int *placed, int *coluna, int *linha, int *came_back)
+{
+	if (!(*placed))
+	{
+		if (*coluna == 0 && *linha == 0)
+			return (0);
+		go_back(coluna, linha);
+		*came_back = 1;
+	}
+	else if (*coluna == 3 && *linha == 3)
+	{
+		if (is_solved(g_outer_matrix))
+			return (1);
+		else
+			go_back(coluna, linha);
+		*came_back = 1;
+	}
+	else
+	{
+		*came_back = 0;
+		(*coluna)++;
+	}
+	return (0);
+}
+
+int		fill_internal_matrix(int matrix[4][4])
+{
+	int cursor_linha;
+	int cursor_coluna;
+	int n;
+	int placed;
+	int came_back;
+
+	placed = 0;
+	came_back = 0;
+	cursor_linha = 0;
+	cursor_coluna = 0;
+	while (cursor_linha < 4)
+	{
+		cursor_coluna = 0;
+		while (cursor_coluna < 4)
+		{
+			placed = 0;
+			if (came_back)
+				n = matrix[cursor_linha][cursor_coluna];
+			else
+				n = 0;
+			while (++n < 5)
+				if (can_place(n, cursor_linha, cursor_coluna))
+				{
+					matrix[cursor_linha][cursor_coluna] = n;
+					placed = 1;
+					break ;
+				}
+			if (check_board(&placed, &cursor_coluna, &cursor_linha, &came_back))
+			{
+				return (1);
+			}
+		}
+		came_back = 0;
+		cursor_linha++;
+	}
+	return (0);
+}
+
 void	print_matrix(int matrix[4][4])
 {
-	int	i;
-	int j;
+	int		i;
+	int		j;
+	char	num;
 
 	i = 0;
 	while (i < 4)
@@ -48,138 +160,20 @@ void	print_matrix(int matrix[4][4])
 		j = 0;
 		while (j < 4)
 		{
-			printf("%c", matrix[i][j] + '0');
+			num = matrix[i][j] + '0';
+			write(1, &num, 1);
 			if (j < 3)
-				printf(" - ");
+				write(1, " ", 1);
 			j++;
 		}
-		printf("\n");
+		write(1, "\n", 1);
 		i++;
 	}
-}
-int		can_place(int number, int matrix[4][4], int cursor_linha, int cursor_coluna)
-{
-	int i;
-	int j;
-
-	i = -1;
-	while (++i < cursor_linha)
-		if (matrix[i][cursor_coluna] == number)
-			return (0);
-	j = -1;
-	while (++j < cursor_coluna)
-		if (matrix[cursor_linha][j] == number)
-			return (0);
-	return 1;
-}
-
-int valid_ones = 0;
-
-int is_solved(int internal_matrix[4][4], int external_matrix[4][4])
-{
-	valid_ones++;
-	int	is_top_valid;
-	int	is_bottom_valid;
-	int	is_left_valid;
-	int	is_right_valid;
-
-	is_top_valid = validate_top_to_bottom(internal_matrix, external_matrix[0]);
-	is_bottom_valid = validate_bottom_to_top(internal_matrix, external_matrix[1]);
-	is_left_valid = validate_left_to_right(internal_matrix, external_matrix[2]);
-	is_right_valid = validate_right_to_left(internal_matrix, external_matrix[3]);
-
-	printf("t, b, l, r: %d %d %d %d\n", is_top_valid, is_bottom_valid, is_left_valid, is_right_valid);
-	if (is_top_valid && is_bottom_valid && is_left_valid && is_right_valid)
-		return (1);
-	return (0);
-}
-int	fill_internal_matrix(int matrix[4][4], int external_matrix[4][4])
-{
-	int cursor_linha;
-	int cursor_coluna;
-	int n;
-	int placed;
-	int came_back;
-	
-
-    placed = 0;
-	came_back = 0;
-	cursor_linha = 0;
-	cursor_coluna = 0;
-	while (cursor_linha < 4)
-	{
-	    cursor_coluna = 0;
-	    while(cursor_coluna < 4)
-	    {
-			//printf("linha, coluna: [%d, %d]\n", cursor_linha, cursor_coluna);
-	        placed = 0;
-			if (came_back)
-				n = matrix[cursor_linha][cursor_coluna];
-			else
-				n = 0;
-    		while (++n < 5)
-    			if (can_place(n, matrix, cursor_linha, cursor_coluna))
-    			{
-    				matrix[cursor_linha][cursor_coluna] = n;
-    				placed = 1;
-    				break;
-    			}
-    		if (!placed) 
-			{
-				if (cursor_coluna == 0 && cursor_linha == 0)
-					return(0);
-    		    if (cursor_coluna == 0)
-    		    {
-    		        cursor_coluna = 3;
-    		        cursor_linha--;
-    		    }
-    		    else
-    		    {
-    		        cursor_coluna--;
-    		    }
-				came_back = 1;
-			}
-        	else if (cursor_coluna == 3 && cursor_linha == 3)
-			{
-
-				printf("nova matriz:\n");
-				//print_matrix(matrix);
-				if (is_solved(matrix, external_matrix))
-					return (1);
-				else
-					if (cursor_coluna == 0)
-					{
-						cursor_coluna = 3;
-						cursor_linha--;
-					}
-					else
-					{
-						cursor_coluna--;
-					}
-				came_back = 1;
-			}
-			else
-			{
-				came_back = 0;
-				cursor_coluna++;
-			}
-	    }
-		came_back = 0;
-	    cursor_linha++;
-	}
-	
-	return (0);
-	
-//	if (!is_solved(matrix, external_matrix))
-//	{
-//
-//	}
 }
 
 int		main(int argc, char *argv[])
 {
 	char	*param;
-	int		external_matrix[4][4];
 	int		internal_matrix[4][4];
 
 	if (argc != 2)
@@ -193,21 +187,13 @@ int		main(int argc, char *argv[])
 		write(1, "Error: bad param\n", 17);
 		return (1);
 	}
-	else
-		write(1, "no errors\n", 10);
-	fill_matrix(external_matrix, param);
-	print_matrix(external_matrix);
-
-	if (!is_board_valid(external_matrix))
+	fill_external_matrix(param);
+	if (!is_board_valid(g_outer_matrix))
 	{
 		write(1, "Error: bad board\n", 17);
 		return (1);
 	}
-
-	if (fill_internal_matrix(internal_matrix, external_matrix))
-		printf("solved\n");
-	else
-		printf("not solved\n");
-	printf("valid ones: %d\n", valid_ones);
-	//print_matrix(internal_matrix);
+	if (!fill_internal_matrix(internal_matrix))
+		write(2, "Error\n", 6);
+	print_matrix(internal_matrix);
 }
