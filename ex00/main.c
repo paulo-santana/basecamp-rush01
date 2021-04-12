@@ -12,6 +12,7 @@
 
 #include <unistd.h>
 #include "functions.h"
+#include <stdio.h>
 
 /*
 ** Preenche a matriz externa com os valores enviados no parametro
@@ -54,17 +55,17 @@ int		can_place(int number, int linha, int coluna)
 	return (1);
 }
 
-int		is_solved(int outer_matrix[4][4])
+int		is_solved()
 {
 	int	is_top_valid;
 	int	is_bottom_valid;
 	int	is_left_valid;
 	int	is_right_valid;
 
-	is_top_valid = validate_top_to_bottom(g_inner_matrix, outer_matrix[0]);
-	is_bottom_valid = validate_bottom_to_top(g_inner_matrix, outer_matrix[1]);
-	is_left_valid = validate_left_to_right(g_inner_matrix, outer_matrix[2]);
-	is_right_valid = validate_right_to_left(g_inner_matrix, outer_matrix[3]);
+	is_top_valid = validate_top_to_bottom(g_inner_matrix, g_outer_matrix[0]);
+	is_bottom_valid = validate_bottom_to_top(g_inner_matrix, g_outer_matrix[1]);
+	is_left_valid = validate_left_to_right(g_inner_matrix, g_outer_matrix[2]);
+	is_right_valid = validate_right_to_left(g_inner_matrix, g_outer_matrix[3]);
 	if (is_top_valid && is_bottom_valid && is_left_valid && is_right_valid)
 		return (1);
 	return (0);
@@ -94,10 +95,14 @@ int		check_board(int *placed, int *coluna, int *linha, int *came_back)
 	}
 	else if (*coluna == 3 && *linha == 3)
 	{
-		if (is_solved(g_outer_matrix))
+		if (is_solved())
+		{
 			return (1);
+		}
 		else
+		{
 			go_back(coluna, linha);
+		}
 		*came_back = 1;
 	}
 	else
@@ -174,7 +179,6 @@ void	print_matrix(int matrix[4][4])
 int		main(int argc, char *argv[])
 {
 	char	*param;
-	int		internal_matrix[4][4];
 
 	if (argc != 2)
 	{
@@ -193,7 +197,7 @@ int		main(int argc, char *argv[])
 		write(1, "Error: bad board\n", 17);
 		return (1);
 	}
-	if (!fill_internal_matrix(internal_matrix))
+	if (!fill_internal_matrix(g_inner_matrix))
 		write(2, "Error\n", 6);
-	print_matrix(internal_matrix);
+	print_matrix(g_inner_matrix);
 }
