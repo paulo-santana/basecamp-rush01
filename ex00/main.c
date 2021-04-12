@@ -72,47 +72,87 @@ int		can_place(int number, int matrix[4][4], int cursor_linha, int cursor_coluna
 			return (0);
 	return 1;
 }
-void	fill_internal_matrix(int matrix[4][4], int external_matrix[4][4])
+
+int is_solved(int matrix[4][4])
+{
+	if (matrix[0][0] < 4)
+		return (0);
+	return (1);
+}
+int	fill_internal_matrix(int matrix[4][4])
 {
 	int cursor_linha;
 	int cursor_coluna;
 	int n;
+	int placed;
+	int came_back;
+	
 
+    placed = 0;
+	came_back = 0;
 	cursor_linha = 0;
 	cursor_coluna = 0;
-	while (matrix[0][0] != 2)
+	while (cursor_linha < 4)
 	{
-		n = 0;
-		while (++n < 5)
-			if (can_place(n, matrix, cursor_linha, cursor_coluna))
-			{
-				matrix[cursor_linha][cursor_coluna] = n;
-			}
+	    cursor_coluna = 0;
+	    while(cursor_coluna < 4)
+	    {
+	        placed = 0;
+			if (came_back)
+				n = matrix[cursor_linha][cursor_coluna];
 			else
+				n = 0;
+    		while (++n < 5)
+    			if (can_place(n, matrix, cursor_linha, cursor_coluna))
+    			{
+    				matrix[cursor_linha][cursor_coluna] = n;
+    				placed = 1;
+    				break;
+    			}
+    		if (!placed) 
 			{
-				if (matrix[cursor_linha][cursor_coluna] < 4)
-				{
-					matrix[cursor_linha][cursor_coluna]++;
-					if (cursor_coluna == 3)
-					{
-						cursor_coluna = 0;
-						cursor_linha++;
-					}
-					else
-						cursor_coluna++;
-				}
+    		    if (cursor_coluna == 0)
+    		    {
+    		        cursor_coluna = 3;
+    		        cursor_linha--;
+    		    }
+    		    else
+    		    {
+    		        cursor_coluna--;
+    		    }
+				came_back = 1;
+			}
+        	else if (cursor_coluna == 3 && cursor_linha == 3)
+			{
+
+				printf("nova matriz:\n");
+				print_matrix(matrix);
+				if (is_solved(matrix))
+					return (1);
 				else
-				{
 					if (cursor_coluna == 0)
 					{
 						cursor_coluna = 3;
 						cursor_linha--;
 					}
 					else
+					{
 						cursor_coluna--;
-				}
+					}
+				came_back = 1;
 			}
+			else
+			{
+				came_back = 0;
+				cursor_coluna++;
+			}
+	    }
+		came_back = 0;
+	    cursor_linha++;
 	}
+	
+	return (0);
+	
 //	if (!is_solved(matrix, external_matrix))
 //	{
 //
@@ -139,12 +179,17 @@ int		main(int argc, char *argv[])
 	else
 		write(1, "no errors\n", 10);
 	fill_matrix(external_matrix, param);
+	print_matrix(external_matrix);
+
 	if (!is_board_valid(external_matrix))
 	{
 		write(1, "Error: bad board\n", 17);
 		return (1);
 	}
 
-	fill_internal_matrix(internal_matrix, external_matrix);
-	print_matrix(internal_matrix);
+	if (fill_internal_matrix(internal_matrix))
+		printf("solved\n");
+	else
+		printf("not solved\n");
+	//print_matrix(internal_matrix);
 }
