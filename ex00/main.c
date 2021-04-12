@@ -75,7 +75,7 @@ int		can_place(int number, int matrix[4][4], int cursor_linha, int cursor_coluna
 
 int valid_ones = 0;
 
-int is_solved(int matrix[4][4])
+int is_solved(int internal_matrix[4][4], int external_matrix[4][4])
 {
 	valid_ones++;
 	int	is_top_valid;
@@ -83,15 +83,17 @@ int is_solved(int matrix[4][4])
 	int	is_left_valid;
 	int	is_right_valid;
 
-	is_top_valid = validate_top_to_bottom(matrix);
-	is_bottom_valid = validate_bottom_to_top(matrix);
-	is_left_valid = validate_left_to_right(matrix);
-	is_right_valid = validate_right_to_left(matrix);
+	is_top_valid = validate_top_to_bottom(internal_matrix, external_matrix[0]);
+	is_bottom_valid = validate_bottom_to_top(internal_matrix, external_matrix[1]);
+	is_left_valid = validate_left_to_right(internal_matrix, external_matrix[2]);
+	is_right_valid = validate_right_to_left(internal_matrix, external_matrix[3]);
+
+	printf("t, b, l, r: %d %d %d %d\n", is_top_valid, is_bottom_valid, is_left_valid, is_right_valid);
 	if (is_top_valid && is_bottom_valid && is_left_valid && is_right_valid)
 		return (1);
 	return (0);
 }
-int	fill_internal_matrix(int matrix[4][4])
+int	fill_internal_matrix(int matrix[4][4], int external_matrix[4][4])
 {
 	int cursor_linha;
 	int cursor_coluna;
@@ -141,8 +143,8 @@ int	fill_internal_matrix(int matrix[4][4])
 			{
 
 				printf("nova matriz:\n");
-				print_matrix(matrix);
-				if (is_solved(matrix))
+				//print_matrix(matrix);
+				if (is_solved(matrix, external_matrix))
 					return (1);
 				else
 					if (cursor_coluna == 0)
@@ -202,7 +204,7 @@ int		main(int argc, char *argv[])
 		return (1);
 	}
 
-	if (fill_internal_matrix(internal_matrix))
+	if (fill_internal_matrix(internal_matrix, external_matrix))
 		printf("solved\n");
 	else
 		printf("not solved\n");
