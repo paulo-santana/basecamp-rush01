@@ -6,11 +6,11 @@
 /*   By: vribeiro <vribeiro@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 23:51:15 by vribeiro          #+#    #+#             */
-/*   Updated: 2021/04/11 23:51:16 by vribeiro         ###   ########.fr       */
+/*   Updated: 2021/04/12 00:41:51 by vribeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		validacao_colXup(matriz[][]) 
+int		validacao_colXup(int matriz[4][4]) 
 {
 	int coluna;
 	int linha;
@@ -39,7 +39,7 @@ int		validacao_colXup(matriz[][])
 	return(1);
 }
 
-int		validacao_colXdown(matriz[][])
+int		validacao_colXdown(int matriz[4][4])
 {
 	int coluna;
 	int linha;
@@ -70,31 +70,59 @@ int		validacao_colXdown(matriz[][])
 }
 
 
-// a fazer
-int		valicao_coldown(matriz[][])
+int		validacao_rowXleft(int matriz[4][4]) 
 {
 	int coluna;
 	int linha;
 	int visao;
 	int cursor;
 
-	coluna = 3;
-	while(coluna >= 0)
+	linha = 0;
+	while(linha < 4)
 	{
-		visao = matriz[colXdown][coluna]
+		visao = matriz[rowXleft][linha];
 		cursor = 0;
-		linha = 3;
+		coluna = 0;
+		while(coluna < 4)
+		{
+			if(cursor < matriz[linha][coluna])
+			{
+				visao--;
+				cursor = matriz[linha][coluna];
+			}
+			coluna++;
+		}
+		linha++;
+		if(visao != 0)
+			return(0);
+	}
+	return(1);
+}
 
-		while(linha >= 0)
+int		valicao_rowXleft(int matriz[4][4])
+{
+	int coluna;
+	int linha;
+	int visao;
+	int cursor;
+
+	linha = 3;
+	while(linha >= 0)
+	{
+		visao = matriz[rowXleft][coluna]
+		cursor = 0;
+		coluna = 3;
+
+		while(coluna >= 0)
 		{
 			if (cursor < matriz[linha][coluna])
 			{
 				visao--;
 				cursor = matriz[linha][coluna];
 			}
-			linha--;
+			coluna--;
 		}
-		coluna--;
+		linha--;
 		if (visao != 0)
 			return (0);
 	}
