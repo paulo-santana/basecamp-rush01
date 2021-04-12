@@ -84,9 +84,9 @@ void	go_back(int *coluna, int *linha)
 	}
 }
 
-int		check_board(int *placed, int *coluna, int *linha, int *came_back)
+int		check_board(int placed, int *coluna, int *linha, int *came_back)
 {
-	if (!(*placed))
+	if (!placed)
 	{
 		if (*coluna == 0 && *linha == 0)
 			return (0);
@@ -121,11 +121,9 @@ int		fill_internal_matrix(int matrix[4][4])
 	int placed;
 	int came_back;
 
-	placed = 0;
 	came_back = 0;
-	cursor_linha = 0;
-	cursor_coluna = 0;
-	while (cursor_linha < 4)
+	cursor_linha = -1;
+	while (++cursor_linha < 4)
 	{
 		cursor_coluna = 0;
 		while (cursor_coluna < 4)
@@ -142,13 +140,16 @@ int		fill_internal_matrix(int matrix[4][4])
 					placed = 1;
 					break ;
 				}
-			if (check_board(&placed, &cursor_coluna, &cursor_linha, &came_back))
+			if (check_board(placed, &cursor_coluna, &cursor_linha, &came_back))
 			{
 				return (1);
 			}
+			else if (!placed && cursor_coluna == 0 && cursor_coluna == 0)
+			{
+				return (0);
+			}
 		}
 		came_back = 0;
-		cursor_linha++;
 	}
 	return (0);
 }
