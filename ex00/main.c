@@ -73,11 +73,23 @@ int		can_place(int number, int matrix[4][4], int cursor_linha, int cursor_coluna
 	return 1;
 }
 
+int valid_ones = 0;
+
 int is_solved(int matrix[4][4])
 {
-	if (matrix[0][0] < 4)
-		return (0);
-	return (1);
+	valid_ones++;
+	int	is_top_valid;
+	int	is_bottom_valid;
+	int	is_left_valid;
+	int	is_right_valid;
+
+	is_top_valid = validate_top_to_bottom(matrix);
+	is_bottom_valid = validate_bottom_to_top(matrix);
+	is_left_valid = validate_left_to_right(matrix);
+	is_right_valid = validate_right_to_left(matrix);
+	if (is_top_valid && is_bottom_valid && is_left_valid && is_right_valid)
+		return (1);
+	return (0);
 }
 int	fill_internal_matrix(int matrix[4][4])
 {
@@ -97,6 +109,7 @@ int	fill_internal_matrix(int matrix[4][4])
 	    cursor_coluna = 0;
 	    while(cursor_coluna < 4)
 	    {
+			//printf("linha, coluna: [%d, %d]\n", cursor_linha, cursor_coluna);
 	        placed = 0;
 			if (came_back)
 				n = matrix[cursor_linha][cursor_coluna];
@@ -111,6 +124,8 @@ int	fill_internal_matrix(int matrix[4][4])
     			}
     		if (!placed) 
 			{
+				if (cursor_coluna == 0 && cursor_linha == 0)
+					return(0);
     		    if (cursor_coluna == 0)
     		    {
     		        cursor_coluna = 3;
@@ -191,5 +206,6 @@ int		main(int argc, char *argv[])
 		printf("solved\n");
 	else
 		printf("not solved\n");
+	printf("valid ones: %d\n", valid_ones);
 	//print_matrix(internal_matrix);
 }

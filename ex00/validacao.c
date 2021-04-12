@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		validacao_colXup(int matriz[4][4]) 
+int		validate_top_to_bottom(int matriz[4][4]) 
 {
 	int coluna;
 	int linha;
@@ -20,7 +20,7 @@ int		validacao_colXup(int matriz[4][4])
 	coluna = 0;
 	while(coluna < 4)
 	{
-		visao = matriz[colXup][coluna];
+		visao = matriz[0][coluna];
 		cursor = 0;
 		linha = 0;
 		while(linha < 4)
@@ -39,7 +39,7 @@ int		validacao_colXup(int matriz[4][4])
 	return(1);
 }
 
-int		validacao_colXdown(int matriz[4][4])
+int		validate_bottom_to_top(int matriz[4][4])
 {
 	int coluna;
 	int linha;
@@ -49,7 +49,7 @@ int		validacao_colXdown(int matriz[4][4])
 	coluna = 3;
 	while(coluna >= 0)
 	{
-		visao = matriz[colXdown][coluna]
+		visao = matriz[3][coluna];
 		cursor = 0;
 		linha = 3;
 
@@ -70,7 +70,7 @@ int		validacao_colXdown(int matriz[4][4])
 }
 
 
-int		validacao_rowXleft(int matriz[4][4]) 
+int		validate_left_to_right(int matriz[4][4]) 
 {
 	int coluna;
 	int linha;
@@ -80,7 +80,7 @@ int		validacao_rowXleft(int matriz[4][4])
 	linha = 0;
 	while(linha < 4)
 	{
-		visao = matriz[rowXleft][linha];
+		visao = matriz[linha][0];
 		cursor = 0;
 		coluna = 0;
 		while(coluna < 4)
@@ -99,7 +99,7 @@ int		validacao_rowXleft(int matriz[4][4])
 	return(1);
 }
 
-int		valicao_rowXleft(int matriz[4][4])
+int		validate_right_to_left(int matriz[4][4])
 {
 	int coluna;
 	int linha;
@@ -109,7 +109,7 @@ int		valicao_rowXleft(int matriz[4][4])
 	linha = 3;
 	while(linha >= 0)
 	{
-		visao = matriz[rowXleft][coluna]
+		visao = matriz[linha][3];
 		cursor = 0;
 		coluna = 3;
 
