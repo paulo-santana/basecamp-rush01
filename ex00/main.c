@@ -36,10 +36,10 @@ void	fill_external_matrix(int matrix[4][4], char *param)
 	}
 }
 
-int		can_place(int board[4][4], int number, int linha, int coluna)
+int	can_place(int board[4][4], int number, int linha, int coluna)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (number > 4)
 		return (0);
@@ -83,7 +83,7 @@ void	print_matrix(int matrix[4][4])
 	}
 }
 
-int		main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	char	*param;
 	int		views[4][4];

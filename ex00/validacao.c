@@ -12,10 +12,10 @@
 
 int	validate_top_to_bottom(int matriz[4][4], int col_up[4])
 {
-	int coluna;
-	int linha;
-	int visao;
-	int cursor;
+	int	coluna;
+	int	linha;
+	int	visao;
+	int	cursor;
 
 	coluna = 0;
 	while (coluna < 4)
@@ -41,10 +41,10 @@ int	validate_top_to_bottom(int matriz[4][4], int col_up[4])
 
 int	validate_bottom_to_top(int matriz[4][4], int col_down[])
 {
-	int coluna;
-	int linha;
-	int visao;
-	int cursor;
+	int	coluna;
+	int	linha;
+	int	visao;
+	int	cursor;
 
 	coluna = 3;
 	while (coluna >= 0)
@@ -70,10 +70,10 @@ int	validate_bottom_to_top(int matriz[4][4], int col_down[])
 
 int	validate_left_to_right(int matriz[4][4], int row_left[4])
 {
-	int coluna;
-	int linha;
-	int visao;
-	int cursor;
+	int	coluna;
+	int	linha;
+	int	visao;
+	int	cursor;
 
 	linha = 0;
 	while (linha < 4)
@@ -99,10 +99,10 @@ int	validate_left_to_right(int matriz[4][4], int row_left[4])
 
 int	validate_right_to_left(int matriz[4][4], int row_right[4])
 {
-	int coluna;
-	int linha;
-	int visao;
-	int cursor;
+	int	coluna;
+	int	linha;
+	int	visao;
+	int	cursor;
 
 	linha = 3;
 	while (linha >= 0)
