@@ -10,12 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 int	ft_strlen(char *str)
 {
-	unsigned int size;
+	unsigned int	size;
 
 	size = 0;
 	while (*str++)
 		size++;
 	return (size);
+}
+
+void	ft_putstr(char *str)
+{
+	unsigned int	len;
+
+	len = ft_strlen(str);
+	write(1, str, len);
 }
