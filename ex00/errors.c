@@ -48,8 +48,8 @@ int	is_parameter_valid(char *param)
 
 int	is_board_valid(int board[4][4])
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < 4)
