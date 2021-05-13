@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
 #include "functions.h"
 
 /*
@@ -42,29 +40,6 @@ int	is_parameter_valid(char *param)
 		else if (param[i] != ' ')
 			return (0);
 		i++;
-	}
-	return (1);
-}
-
-int	is_board_valid(int board[4][4])
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < 4)
-	{
-		j = 0;
-		while (j < 4)
-		{
-			if (board[i][j] + board[i + 1][j] < 3 ||
-				board[i][j] + board[i + 1][j] > 5)
-			{
-				return (0);
-			}
-			j++;
-		}
-		i += 2;
 	}
 	return (1);
 }
