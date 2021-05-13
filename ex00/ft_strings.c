@@ -22,10 +22,20 @@ int	ft_strlen(char *str)
 	return (size);
 }
 
-void	ft_putstr(char *str)
+void	ft_write(unsigned int fd, char *str)
 {
 	unsigned int	len;
 
 	len = ft_strlen(str);
-	write(1, str, len);
+	write(fd, str, len);
+}
+
+void	ft_puterr(char *str)
+{
+	ft_write(2, str);
+}
+
+void	ft_putstr(char *str)
+{
+	ft_write(1, str);
 }

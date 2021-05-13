@@ -90,22 +90,20 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		write(2, "Error: Missing argument\n", 25);
-		return (1);
+		ft_puterr("Error\n");
+		return (3);
 	}
 	param = argv[1];
 	if (!is_parameter_valid(param))
 	{
-		write(2, "Error: bad param\n", 17);
+		ft_puterr("Error\n");
 		return (2);
 	}
 	fill_external_matrix(views, param);
-	if (!is_board_valid(views))
-	{
-		write(2, "Error: bad board\n", 17);
-		return (3);
-	}
 	if (!solve(views))
-		write(2, "Error\n", 6);
+	{
+		ft_puterr("Error\n");
+		return (1);
+	}
 	return (0);
 }

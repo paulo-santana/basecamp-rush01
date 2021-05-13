@@ -25,5 +25,7 @@ int				find_next(int board[4][4]);
 int				solve(int outer_matrix[4][4]);
 void			print_matrix(int matrix[4][4]);
 int				can_place(int board[4][4], int number, int linha, int coluna);
+void			ft_putstr(char *str);
+void			ft_puterr(char *str);
 
 #endif
