@@ -31,7 +31,7 @@ int	is_parameter_valid(char *param)
 	i = 0;
 	param_size = ft_strlen(param);
 	if (param_size != 31)
-		return (1);
+		return (0);
 	while (i < param_size)
 	{
 		if (i % 2 == 0)
